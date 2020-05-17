@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.th.app.estock.bean.TbHistoryBean;
 import com.th.app.estock.bean.TbProductBean;
+import com.th.app.estock.bean.TbProductSubTypeBean;
+import com.th.app.estock.bean.TbProductTypeBean;
 import com.th.app.estock.bean.TbShopTypeBean;
 import com.th.app.estock.entity.TbHistory;
 import com.th.app.estock.entity.TbProduct;
@@ -27,6 +29,7 @@ import com.th.app.estock.interfaces.BusinessService;
 import com.th.app.estock.persistence.FwPersistence;
 import com.th.app.estock.repository.TbHistoryRepository;
 import com.th.app.estock.repository.TbProductRepository;
+import com.th.app.estock.request.FwRequestData;
 import com.th.app.estock.response.FwResponseEntity;
 
 @Service
@@ -54,15 +57,15 @@ public class BusinessServiceImpl implements BusinessService {
 		return response;
 	}
 	
-	@Override
+	/*@Override
 	public FwResponseEntity<TbProductBean> getProductListByCondition(TbProductBean tbProductBean) throws Exception {
 		logger.info("========== Enter getProductListByCondition BusinessServiceImpl ==========");
 		FwResponseEntity<TbProductBean> response = new FwResponseEntity<TbProductBean>();
 		response =   persistence.getProductListByCondition(entityManager, tbProductBean);
 		return response;
-	}
+	}*/
 
-	@Transactional
+	/*@Transactional
 	public FwResponseEntity<TbProductBean> addTbProduct(TbProductBean tbProductBean) throws Exception {
 		logger.info("========== Enter addTbProduct BusinessServiceImpl ==========");
 		FwResponseEntity<TbProductBean> response = new FwResponseEntity<>();
@@ -92,9 +95,9 @@ public class BusinessServiceImpl implements BusinessService {
 			response.setMessageDetail(ex.getMessage());
 			return response;
 		}
-	}
+	}*/
 
-	@Transactional
+	/*@Transactional
 	public FwResponseEntity<TbProductBean> editProduct(TbProductBean tbProductBean) throws Exception {
 		logger.info("========== Enter editProduct BusinessServiceImpl ==========");
 		FwResponseEntity<TbProductBean> response = new FwResponseEntity<>();
@@ -123,7 +126,7 @@ public class BusinessServiceImpl implements BusinessService {
 			response.setMessageDetail(ex.getMessage());
 			return response;
 		}
-	}
+	}*/
 	
 	@Override
 	public FwResponseEntity<TbProductBean> getProductByBarcode(String id) throws Exception {
@@ -188,7 +191,7 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public FwResponseEntity<TbHistoryBean> getHistoryListByCondition(TbHistoryBean tbHistoryBean) throws Exception {
-		logger.info("========== Enter getProductListByCondition BusinessServiceImpl ==========");
+		logger.debug("========== Enter getProductListByCondition BusinessServiceImpl ==========");
 		FwResponseEntity<TbHistoryBean> response = new FwResponseEntity<TbHistoryBean>();
 		response =   persistence.getHistoryListByCondition(entityManager, tbHistoryBean);
 		return response;
@@ -196,11 +199,80 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public FwResponseEntity<TbShopTypeBean> getAllShopTypeList() throws Exception {
-		logger.info("========== Enter getAllShopTypeList BusinessServiceImpl ==========");
+		logger.debug("========== Enter getAllShopTypeList BusinessServiceImpl ==========");
 		FwResponseEntity<TbShopTypeBean> response = new FwResponseEntity<>();
 		TbShopTypeBean tbShopTypeBean = new TbShopTypeBean();
 		response =   persistence.getAllShopTypeList(entityManager, tbShopTypeBean);
 		return response;
 	}
+
+	@Override
+	public FwResponseEntity<TbProductTypeBean> getAllProductTypeList() throws Exception {
+		logger.debug("========== Enter getAllProductTypeList BusinessServiceImpl ==========");
+		FwResponseEntity<TbProductTypeBean> response = new FwResponseEntity<>();
+		try {
+			TbProductTypeBean tbProductTypeBean = new TbProductTypeBean();
+			response =   persistence.getAllProductTypeList(entityManager, tbProductTypeBean);
+			response.setMessageCode(FwEnumUtils.SUCCES_CODE_200.getValue());
+			response.setMessageDetail(FwEnumUtils.SUCCES_DETAIL_200.getValue());
+		}catch(Exception e) {
+			response.setMessageCode(FwEnumUtils.ERROR_CODE_500.getValue());
+			response.setMessageDetail(e.getMessage());
+		}finally {
+			logger.debug("========== End getAllProductTypeList BusinessServiceImpl ==========");
+		}
+		return response;
+	}
+
+	@Override
+	public FwResponseEntity<TbProductSubTypeBean> getAllProductSubTypeList() throws Exception {
+		logger.debug("========== Enter getAllProductSubTypeList BusinessServiceImpl ==========");
+		FwResponseEntity<TbProductSubTypeBean> response = new FwResponseEntity<>();
+		try {
+			TbProductSubTypeBean tbProductSubTypeBean = new TbProductSubTypeBean();
+			response =   persistence.getAllProductSubTypeList(entityManager, tbProductSubTypeBean);
+			response.setMessageCode(FwEnumUtils.SUCCES_CODE_200.getValue());
+			response.setMessageDetail(FwEnumUtils.SUCCES_DETAIL_200.getValue());
+		}catch(Exception e) {
+			response.setMessageCode(FwEnumUtils.ERROR_CODE_500.getValue());
+			response.setMessageDetail(e.getMessage());
+		}finally {
+			logger.debug("========== End getAllProductSubTypeList BusinessServiceImpl ==========");
+		}
+		return response;
+	}
+	
+	@Override
+	public FwResponseEntity<TbProductBean> getProductListByCondition(FwRequestData<TbProductBean> tbProductBean) throws Exception {
+		logger.debug("========== Enter getProductListByCondition BusinessServiceImpl ==========");
+		FwResponseEntity<TbProductBean> response = new FwResponseEntity<>();
+		//response =   persistence.getProductListByCondition(entityManager, tbProductBean);
+		//return response;
+		try {
+			response =   persistence.getProductListByCondition(entityManager, tbProductBean);
+			response.setMessageCode(FwEnumUtils.SUCCES_CODE_200.getValue());
+			response.setMessageDetail(FwEnumUtils.SUCCES_DETAIL_200.getValue());
+		} catch(Exception e) {
+			response.setMessageCode(FwEnumUtils.ERROR_CODE_500.getValue());
+			response.setMessageDetail(e.getMessage());
+		} finally {
+			logger.debug("========== End getProductListByCondition BusinessServiceImpl ==========");
+		}
+		return response;
+	}
+
+	@Override
+	public FwResponseEntity<TbProductBean> addTbProduct(TbProductBean tbProductBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FwResponseEntity<TbProductBean> editProduct(TbProductBean tbProductBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

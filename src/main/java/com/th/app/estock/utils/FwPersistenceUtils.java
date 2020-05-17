@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +18,10 @@ import javax.persistence.Parameter;
 import javax.persistence.Query;
 
 import org.apache.commons.beanutils.PropertyUtils;
+
+import com.th.app.estock.bean.TbProductTypeBean;
+import com.th.app.estock.response.FwResponseEntity;
+import com.th.app.estock.response.Paginator;
 
 public class FwPersistenceUtils {
 
@@ -493,6 +498,67 @@ public class FwPersistenceUtils {
 		// Set parameters1 = query.getParameters();
 		for (Parameter parameter : query.getParameters())
 			setParameter(query, criteria, parameter.getName());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> fwQueryWithPaginator(EntityManager entityManager, String sql,
+			Class<T> class1, Map<String, Object> conditions, int offset, int limit, FwResponseEntity<T> response) {
+		//FwResponseEntity<T> response = new FwResponseEntity<>();
+		StringBuilder countSql = new StringBuilder();
+		List<T> results = new ArrayList<>();
+		Paginator paginator = new Paginator();
+		int count = 0;
+		
+		try {
+			countSql.append(" SELECT COUNT(*) as count FROM ( ");
+			countSql.append(sql);
+			countSql.append(" ) count ");
+			
+			//จะดึง datacount เฉพาะกดค้นหาครั้งแรกเท่านั้น
+			/*if(totalRecords==0) {
+				//หาจำนวน record ทั้งหมด
+				Query countQuery = createNativeQuery(entityManager, countSql.toString());
+				setParameters(countQuery, conditions);
+				
+				BigInteger _count = (BigInteger) countQuery.getResultList().get(0);
+				count = new Integer(_count.intValue());
+				//count = ((BigDecimal) countQuery.getResultList().get(0)).intValue();
+			}*/
+			
+			Query countQuery = createNativeQuery(entityManager, countSql.toString());
+			setParameters(countQuery, conditions);
+			
+			BigInteger _count = (BigInteger) countQuery.getResultList().get(0);
+			count = new Integer(_count.intValue());
+			//count = ((BigDecimal) countQuery.getResultList().get(0)).intValue();
+			paginator.setCount(count);
+		
+			//query data 
+			Query query = createNativeQuery(entityManager, sql);
+			query.setFirstResult(offset != 0 ? offset : 0);
+			query.setMaxResults(limit != 0 ? limit : 5);
+			setParameters(query, conditions); 
+			results =  autoMapper(sql, class1, query.getResultList());
+			
+			if(paginator != null) {
+				paginator.setOffset(offset != 0 ? offset : 0);
+				paginator.setLimit(limit != 0 ? limit : 5);
+				
+				//จะดึง datacount เฉพาะกดค้นหาครั้งแรกเท่านั้น
+				/*if(totalRecords==0) {
+					response2.setCount(count);
+				}else {
+					response2.setCount(totalRecords);
+				}*/
+			}
+			response.setResults(results);
+			response.setPaginator(paginator);
+			return results;
+		}catch(Exception ex) {
+			throw ex;
+		} finally {
+			
+		}
 	}
 
 }

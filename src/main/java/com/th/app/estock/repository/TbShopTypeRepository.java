@@ -8,4 +8,6 @@ import com.th.app.estock.entity.TbShopType;
 @Repository
 public interface TbShopTypeRepository extends CrudRepository<TbShopType, Long> {
 
+	public TbShopType findByShopTypePk(Long shopTypePk);
+	
 }

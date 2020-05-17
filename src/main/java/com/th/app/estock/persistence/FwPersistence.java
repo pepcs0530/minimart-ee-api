@@ -14,8 +14,11 @@ import org.springframework.util.StringUtils;
 
 import com.th.app.estock.bean.TbHistoryBean;
 import com.th.app.estock.bean.TbProductBean;
+import com.th.app.estock.bean.TbProductSubTypeBean;
+import com.th.app.estock.bean.TbProductTypeBean;
 import com.th.app.estock.bean.TbShopTypeBean;
 import com.th.app.estock.enums.FwEnumUtils;
+import com.th.app.estock.request.FwRequestData;
 import com.th.app.estock.response.FwResponseEntity;
 import com.th.app.estock.response.Paginator;
 import com.th.app.estock.utils.FwPersistenceUtils;
@@ -53,7 +56,7 @@ public class FwPersistence {
 		}
 	}
 
-	public FwResponseEntity<TbProductBean> getProductListByCondition(EntityManager entityManager, TbProductBean tbProductBean) {
+	/*public FwResponseEntity<TbProductBean> getProductListByCondition(EntityManager entityManager, TbProductBean tbProductBean) {
 		logger.info("========== Start getProductListByCondition Persistence ==========");
 		FwResponseEntity<TbProductBean> response = new FwResponseEntity<TbProductBean>();
 		Map<String, Object> conditions = new HashMap<String, Object>();
@@ -111,7 +114,7 @@ public class FwPersistence {
 			response.setMessageDetail(e.getMessage());
 			return response;
 		}
-	}
+	}*/
 
 	public List<TbProductBean> getProductByBarcode(EntityManager entityManager, String id) throws Exception {
 		logger.info("========== Start getProductByBarcode Persistence ==========");
@@ -224,6 +227,90 @@ public class FwPersistence {
 			response.setMessageDetail(e.getMessage());
 		} finally {
 			logger.info("========== End getAllShopTypeList Persistence ==========");
+		}
+		return response;
+	}
+
+	public FwResponseEntity<TbProductTypeBean> getAllProductTypeList(EntityManager entityManager,
+			TbProductTypeBean tbProductTypeBean) {
+		logger.info("========== Start getAllProductTypeList Persistence ==========");
+		FwResponseEntity<TbProductTypeBean> response = new FwResponseEntity<>();
+		StringBuilder sqlStr = new StringBuilder();
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		ArrayList<TbProductTypeBean> productTypeList = new ArrayList<>();
+		try{
+			sqlStr.append(" SELECT ");
+			sqlStr.append(" 	product_type_pk, shop_type_pk, product_type_name ");
+			sqlStr.append(" FROM ");
+			sqlStr.append(" 	tb_product_type ");
+			
+			productTypeList = (ArrayList<TbProductTypeBean>) FwPersistenceUtils.fwQueryWithPaginator(entityManager, sqlStr.toString(), TbProductTypeBean.class, conditions, 0, 100, response);
+			response.setResults(productTypeList);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			logger.info("========== End getAllProductTypeList Persistence ==========");
+		}
+		return response;
+	}
+
+	public FwResponseEntity<TbProductSubTypeBean> getAllProductSubTypeList(EntityManager entityManager,
+			TbProductSubTypeBean tbProductSubTypeBean) {
+		logger.info("========== Start getAllProductSubTypeList Persistence ==========");
+		FwResponseEntity<TbProductSubTypeBean> response = new FwResponseEntity<>();
+		StringBuilder sqlStr = new StringBuilder();
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		ArrayList<TbProductSubTypeBean> productSubTypeList = new ArrayList<>();
+		try {
+			sqlStr.append(" SELECT ");
+			sqlStr.append(" 	product_sub_type_pk, product_sub_type_name ");
+			sqlStr.append(" FROM ");
+			sqlStr.append(" 	tb_product_sub_type ");
+			
+			productSubTypeList = (ArrayList<TbProductSubTypeBean>) FwPersistenceUtils.fwQueryWithPaginator(entityManager, sqlStr.toString(), TbProductSubTypeBean.class, conditions, 0, 100, response);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			logger.info("========== End getAllProductSubTypeList Persistence ==========");
+		}
+		return response;
+	}
+	
+	public FwResponseEntity<TbProductBean> getProductListByCondition(EntityManager entityManager, FwRequestData<TbProductBean> tbProductBean) {
+		logger.info("========== Start getProductListByCondition Persistence ==========");
+		FwResponseEntity<TbProductBean> response = new FwResponseEntity<TbProductBean>();
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		StringBuilder sqlStr = new StringBuilder();
+		//ArrayList<TbProductBean> productList = new ArrayList<>();
+		try {
+			sqlStr.append(" SELECT ");
+			sqlStr.append(" 	product_pk, product_name, product_type, product_sub_type, price, remark, ");
+			sqlStr.append(" 	'assets/images/latte.jpg' AS image_path ");
+			sqlStr.append(" FROM ");
+			sqlStr.append(" 	tb_product ");
+			sqlStr.append(" WHERE 1=1 ");
+			
+			if(!StringUtils.isEmpty(tbProductBean.getFormData().getProductType())){
+				sqlStr.append(" AND product_type = :productType ");
+				conditions.put("productType", tbProductBean.getFormData().getProductType());
+			}
+			
+			if(!StringUtils.isEmpty(tbProductBean.getFormData().getProductSubType())){
+				sqlStr.append(" AND product_sub_type = :productSubType ");
+				conditions.put("productSubType", tbProductBean.getFormData().getProductSubType());
+			}
+			
+			if(!StringUtils.isEmpty(tbProductBean.getFormData().getProductName())){
+				sqlStr.append(" AND product_name LIKE :productName ");
+				conditions.put("productName", "%"+tbProductBean.getFormData().getProductName()+"%");
+			}
+			
+			FwPersistenceUtils.fwQueryWithPaginator(entityManager, sqlStr.toString(), TbProductBean.class, conditions, tbProductBean.getPaginator().getOffset(), tbProductBean.getPaginator().getLimit(), response);
+			
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			logger.info("========== End getProductListByCondition Persistence ==========");
 		}
 		return response;
 	}

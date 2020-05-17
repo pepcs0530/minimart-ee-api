@@ -1,111 +1,100 @@
 package com.th.app.estock.entity;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
+/**
+ * The persistent class for the tb_product database table.
+ * 
+ */
 @Entity
-@Table(name="TB_PRODUCT")
-public class TbProduct extends AbstractAudit {
-	private Long productPk;
-	private String productBarcode;
-	private String productName;
-	private String productDesc;
-	private String productType;
-	private BigDecimal price;
-	private BigDecimal quantity;
-	private Timestamp storeDate;
-	private Timestamp expDate;
-	
-	public TbProduct() {
-	}
-	
+@Table(name="tb_product")
+@NamedQuery(name="TbProduct.findAll", query="SELECT t FROM TbProduct t")
+public class TbProduct implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "PRODUCT_PK")
-	public Long getProductPk() {
-		return productPk;
-	}
+	@Column(name="product_pk")
+	private Long productPk;
+
+	@Column(name="product_name")
+	private String productName;
+
+	@Column(name="product_sub_type")
+	private int productSubType;
+
+	@Column(name="product_type")
+	private int productType;
+
+	@Column(name="price")
+	private BigDecimal price;
 	
+	@Column(name="remark")
+	private String remark;
+
+	@Column(name="shopTypePk")
+	private int shopTypePk;
+
+	public TbProduct() {
+	}
+
+	public Long getProductPk() {
+		return this.productPk;
+	}
+
 	public void setProductPk(Long productPk) {
 		this.productPk = productPk;
 	}
-	
-	@Column(name = "PRODUCT_BARCODE")
-	public String getProductBarcode() {
-		return productBarcode;
-	}
-	
-	public void setProductBarcode(String productBarcode) {
-		this.productBarcode = productBarcode;
-	}
-	
-	@Column(name = "PRODUCT_NAME")
-	public String getProductName() {
-		return productName;
-	}
-	
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	
-	@Column(name = "PRODUCT_DESC")
-	public String getProductDesc() {
-		return productDesc;
-	}
-	
-	public void setProductDesc(String productDesc) {
-		this.productDesc = productDesc;
-	}
-	
-	@Column(name = "PRODUCT_TYPE")
-	public String getProductType() {
-		return productType;
-	}
-	
-	public void setProductType(String productType) {
-		this.productType = productType;
-	}
-	
-	@Column(name = "PRICE")
+
 	public BigDecimal getPrice() {
-		return price;
+		return this.price;
 	}
-	
+
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	
-	@Column(name = "QUANTITY")
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
-	
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+
+	public String getProductName() {
+		return this.productName;
 	}
 
-	@Column(name = "STORE_DATE")
-	public Timestamp getStoreDate() {
-		return storeDate;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
-	public void setStoreDate(Timestamp storeDate) {
-		this.storeDate = storeDate;
+	public int getProductSubType() {
+		return this.productSubType;
 	}
 
-	@Column(name = "EXP_DATE")
-	public Timestamp getExpDate() {
-		return expDate;
+	public void setProductSubType(int productSubType) {
+		this.productSubType = productSubType;
 	}
 
-	public void setExpDate(Timestamp expDate) {
-		this.expDate = expDate;
+	public int getProductType() {
+		return this.productType;
 	}
+
+	public void setProductType(int productType) {
+		this.productType = productType;
+	}
+
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public int getShopTypePk() {
+		return this.shopTypePk;
+	}
+
+	public void setShopTypePk(int shopTypePk) {
+		this.shopTypePk = shopTypePk;
+	}
+
 }

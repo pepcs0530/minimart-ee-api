@@ -3,134 +3,68 @@ package com.th.app.estock.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class TbProductBean {
 
 	private Long productPk;
-	private String productBarcode;
+	private Long shopTypePk;
+	private Long productSubType;
+	private Long productType;
 	private String productName;
-	private String productDesc;
-	private String productType;
 	private BigDecimal price;
-	private BigDecimal quantity;
-	private Timestamp storeDate;
-	private Timestamp expDate;
-	
-	private Integer offset;
-	private Integer limit;
-	private Integer count;
-	private String createBy;
-	private String updateBy;
+	private String remark;
+	private String imagePath;
 	
 	public Long getProductPk() {
 		return productPk;
 	}
-	
 	public void setProductPk(Long productPk) {
 		this.productPk = productPk;
 	}
-	
-	public String getProductBarcode() {
-		return productBarcode;
+	public Long getShopTypePk() {
+		return shopTypePk;
 	}
-	
-	public void setProductBarcode(String productBarcode) {
-		this.productBarcode = productBarcode;
+	public void setShopTypePk(Long shopTypePk) {
+		this.shopTypePk = shopTypePk;
 	}
-	
+	public Long getProductSubType() {
+		return productSubType;
+	}
+	public void setProductSubType(Long productSubType) {
+		this.productSubType = productSubType;
+	}
+	public Long getProductType() {
+		return productType;
+	}
+	public void setProductType(Long productType) {
+		this.productType = productType;
+	}
 	public String getProductName() {
 		return productName;
 	}
-	
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	
-	public String getProductDesc() {
-		return productDesc;
-	}
-	
-	public void setProductDesc(String productDesc) {
-		this.productDesc = productDesc;
-	}
-	
-	public String getProductType() {
-		return productType;
-	}
-
-	public void setProductType(String productType) {
-		this.productType = productType;
-	}
-
 	public BigDecimal getPrice() {
 		return price;
 	}
-	
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	
-	public BigDecimal getQuantity() {
-		return quantity;
+	public String getRemark() {
+		return remark;
 	}
-	
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
-	
-	public Integer getOffset() {
-		return offset;
+	public String getImagePath() {
+		return imagePath;
 	}
-	
-	public void setOffset(Integer offset) {
-		this.offset = offset;
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
-	
-	public Integer getLimit() {
-		return limit;
-	}
-	
-	public void setLimit(Integer limit) {
-		this.limit = limit;
-	}
-	
-	public Integer getCount() {
-		return count;
-	}
-	
-	public void setCount(Integer count) {
-		this.count = count;
-	}
-	
-	public String getCreateBy() {
-		return createBy;
-	}
-	
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-	
-	public String getUpdateBy() {
-		return updateBy;
-	}
-	
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
-
-	public Timestamp getStoreDate() {
-		return storeDate;
-	}
-
-	public void setStoreDate(Timestamp storeDate) {
-		this.storeDate = storeDate;
-	}
-
-	public Timestamp getExpDate() {
-		return expDate;
-	}
-
-	public void setExpDate(Timestamp expDate) {
-		this.expDate = expDate;
-	}
-	
 }

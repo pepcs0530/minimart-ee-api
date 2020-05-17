@@ -42,6 +42,8 @@ public class WebSecurityConfigEnvDev extends WebSecurityConfigurerAdapter {
 				
 				.antMatchers("/product/*").permitAll()
 				.antMatchers("/shopType/*").permitAll()
+				.antMatchers("/productType/*").permitAll()
+				.antMatchers("/productSubType/*").permitAll()
 				
 				// Disallow everything else..
 				.anyRequest().authenticated();
